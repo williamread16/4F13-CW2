@@ -4,11 +4,12 @@ import numpy as np
 from scipy.special import roots_hermitenorm
 from scipy.special import ndtr as normcdf
 
-def exprop(games, num_players, num_its, quad_degree = 64):
+def exprop(games, num_players, num_its, return_msg=False, quad_degree = 64):
     """
     games : array of game outcomes, (winner, loser)
     num_players : number of players
     num_its : number of iterations of expectation prop.
+    return_msg: return messages or not (default = False)
     quad_degree : number of points for Gauss-Hermite quadrature
     """
     # points for Gauss-Hermite numerical integration
@@ -48,5 +49,8 @@ def exprop(games, num_players, num_its, quad_degree = 64):
             # update the messages:
             for a, j, y_ai in X[i]:
                 msg[i,a] = mean_var(mrgnl / F(msg[j,a], y_ai))
+
+    if return_msg:
+        return posterior, msg
 
     return posterior
