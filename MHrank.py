@@ -20,6 +20,8 @@ def MH_sample(games, num_players, num_its):
 
     w = np.zeros(num_players)  # skill for each player
     accepted = 0  # count accepted moves
+    w_means = []
+    w_stds = []
     for itr in tqdm(range(num_its)):
         for i in range(num_players):
             j, outcome = X[i].T
@@ -54,6 +56,8 @@ def MH_sample(games, num_players, num_its):
                 w[i] = w_prop
             # (Else, do nothing and keep w[i] as it is, i.e., reject the move)
 
+        w_means.append(np.mean(w))
+        w_stds.append(np.std(w))
         skill_samples[:, itr] = w
 
-    return skill_samples, accepted
+    return skill_samples, accepted, w_means, w_stds
